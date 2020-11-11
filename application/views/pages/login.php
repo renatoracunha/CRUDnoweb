@@ -1,5 +1,5 @@
 <div class="main">
-    <div class="container">
+    <div class="container" id="container">
         <center>
             <div class="middle">
                 <div id="login">

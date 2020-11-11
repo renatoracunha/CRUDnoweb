@@ -77,7 +77,7 @@ p {
     }
 }
 
-.container {
+#container {
     left: 50%;
     position: fixed;
     top: 50%;
@@ -174,24 +174,19 @@ input[type="password"] {
 }
 
 
-/* .login-button,
-.noweb-button {
-    border-radius: 3px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    background-color: #000000;
-    color: #eee;
-    font-weight: bold;
-    text-transform: uppercase;
-    padding: 5px 10px;
-    height: 30px;
-} */
+/* client */
 
+.main-card {
+    background-color: #f1f1f1;
+    padding: 15px;
+    top: 15px;
+    border-radius: 10px;
+    position: relative;
+}
 
-/* .login-button:hover,
-.noweb-button:hover {
-    background-color: #d44179;
-} */
+.event-list-image {
+    height: 150px;
+}
 
 
 /* register event */

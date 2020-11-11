@@ -1,5 +1,4 @@
-function register(base_url) {
-    //return console.log($('#imagem'));
+function register(base_url, event_id) {
     let event_title = $('#event_title').val();
     let event_address = $('#event_address').val();
     let event_date = $('#event_date').val();
@@ -37,13 +36,6 @@ function register(base_url) {
         $('#event_hour').css("background-color", "#FFD6D6");
         return;
     }
-    if (event_image == '') {
-        $('#event_image').addClass('is-invalid');
-        $('#event_image').focus();
-        alert('Escolha uma imagem para o evento');
-        $('#event_image').css("background-color", "#FFD6D6");
-        return;
-    }
     if (event_description == '') {
         $('#event_description').addClass('is-invalid');
         $('#event_description').focus();
@@ -56,15 +48,19 @@ function register(base_url) {
     });
 
     $.ajax({
-        url: base_url + "index.php/main/ajax_register_event",
+        url: base_url + "index.php/main/ajax_edit_event",
         dataType: "json",
         type: "get",
-        data: { event_title: event_title, event_address: event_address, event_date: event_date, event_hour: event_hour, event_image: event_image, event_description: event_description },
+        data: { event_id: event_id, event_title: event_title, event_address: event_address, event_date: event_date, event_hour: event_hour, event_description: event_description },
         cache: false,
         success: function(data) {
             //console.log(data);
             if (data) {
-                document.getElementById("register_event_form").submit();
+                if (event_image) {
+                    document.getElementById("register_event_form").submit();
+                } else {
+                    window.location.href = "../client";
+                }
             } else {
                 alert('error, procurar equipe de desenvolvimento');
             }

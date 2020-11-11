@@ -17,18 +17,23 @@ class Main extends CI_Controller
         $this->view();
     }
 
-    public function view($page = 'login')
+    public function view($page = 'login', $param = '')
     {
 
         if (!file_exists(APPPATH . 'views/pages/' . $page . '.php')) {
             show_404();
         }
 
+
+
         $data['title'] = ucfirst($page); // Capitalize the first letter
         if ($page == 'client') {
             $user_events = $this->Main_model->get_user_events_data($_SESSION['user_id']);
             $data['events'] = $user_events;
+        } else if ($page == 'editevent') {
+            $data['event_data'] = $this->Main_model->get_event_data($param);
         }
+
         $this->load->view('templates/header', $data);
         if ($page != 'login')
             $this->load->view('templates/navbar');
@@ -57,6 +62,8 @@ class Main extends CI_Controller
         echo json_encode($login_data, JSON_UNESCAPED_UNICODE);
     }
 
+
+    #register event
     public function ajax_register_event()
     {
         $event_data = $this->input->get();
@@ -66,16 +73,27 @@ class Main extends CI_Controller
 
     public function upload_image()
     {
-       
-        print_r($_FILES["event_image"]);exit;
-        $table = 'events';
-        $last_inserted_id = $this->Main_model->get_last_id($table,$_SESSION['user_id']);
-        //print_r($last_inserted_id);exit;
-        $filename = 'event_'.$last_inserted_id;
-        $ext = $_FILES["imagem_produto"];
+        $ext = explode('.', $_FILES["event_image"]['name']);
+        $ext = end($ext);
+
+        $last_inserted_id = $this->Main_model->get_last_event($_SESSION['user_id']);
+        $filename = 'event_' . end($last_inserted_id)->id;
+        // print_r($filename);
+        // exit;
+
+        // $ext = explode($_FILES["event_image"], '.');
+        // $ext = end($ext);
         // $targetPath = './imagens/' . $_FILES['imagem_produto']['name'];
-        $targetPath = base_url('/assets/images/client_uploads/'.$filename).$ext;
-        move_uploaded_file($_FILES["imagem_produto"]["tmp_name"], $targetPath);
+        $targetPath = $_SERVER['DOCUMENT_ROOT'] . '/assets/images/client_uploads/' . $filename . '.' . $ext;
+        move_uploaded_file($_FILES["event_image"]["tmp_name"], $targetPath);
         $this->view('client');
+    }
+
+    #edit event
+    public function ajax_edit_event()
+    {
+        $event_data = $this->input->get();
+        $update_satus = $this->Main_model->edit_event($event_data);
+        echo json_encode($update_satus, JSON_UNESCAPED_UNICODE);
     }
 }

@@ -45,7 +45,7 @@ class Main_model extends CI_Model
 
     public function register_event($event_data)
     {
-       
+
         $insert_data = array(
             'title' => $event_data['event_title'],
             'user_id' => $_SESSION['user_id'],
@@ -60,9 +60,33 @@ class Main_model extends CI_Model
         return $results;
     }
 
-    public function get_last_id($table_name, $user_id)
+    public function get_last_event($user_id)
     {
-        $query = $this->db->get($table_name, 1,array('user_id' => $user_id));
+        $sql = "SELECT id FROM events WHERE user_id = ? ";
+        $query = $this->db->query($sql, array($user_id));
         return $query->result();
+    }
+
+    public function get_event_data($event_id)
+    {
+        $query = $this->db->get_where('events', array('id' => $event_id));
+        return $query->result();
+    }
+
+    public function edit_event($event_data)
+    {
+
+        $update_data = array(
+            'title' => $event_data['event_title'],
+            'description' => $event_data['event_description'],
+            'event_date' => $event_data['event_date'],
+            'event_hour' => $event_data['event_hour'],
+            'address' => $event_data['event_address']
+        );
+
+        $this->db->set($update_data);
+        $this->db->where('id', $event_data['event_id']);
+        $results = $this->db->update('events');
+        return $results;
     }
 }
