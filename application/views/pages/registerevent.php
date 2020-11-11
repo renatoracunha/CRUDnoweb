@@ -19,8 +19,9 @@
                     <input type="time" class="form-control" id="event_hour">
                 </div>
                 <div class="form-group col-12 col-md-4 align-self-end">
-                    <label for="event_image" class="file-label">Imagem do Evento <span class="fa fa-upload"></span></label>
-                    <input type="file" name="event_image" class="d-none" accept="image/png, image/jpeg" id="event_image">
+                    <label for="event_image" onclick="image_cashed()" class="file-label">Imagem do Evento <span class="fa fa-upload"></span></label>
+                    <span id="upload_check" class="fa fa-check text-success d-none"></span>
+                    <input type="file" name="event_image" onclick="image_cashed()" class="d-none" accept="image/png, image/jpeg" id="event_image">
                 </div>
             </div>
             <div class="form-group">

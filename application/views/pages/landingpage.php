@@ -3,7 +3,7 @@
         <center>
             <h1>Nossos Eventos</h1>
         </center>
-        <div class="main-card">
+        <div class="main-card w-100">
             <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                     <?php

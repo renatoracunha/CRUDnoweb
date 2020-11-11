@@ -39,6 +39,7 @@ function register(base_url) {
     }
     if (event_image == '') {
         $('#event_image').addClass('is-invalid');
+        $('#upload_check').addClass('d-none');
         $('#event_image').focus();
         alert('Escolha uma imagem para o evento');
         $('#event_image').css("background-color", "#FFD6D6");
@@ -62,7 +63,6 @@ function register(base_url) {
         data: { event_title: event_title, event_address: event_address, event_date: event_date, event_hour: event_hour, event_image: event_image, event_description: event_description },
         cache: false,
         success: function(data) {
-            //console.log(data);
             if (data) {
                 document.getElementById("register_event_form").submit();
             } else {
@@ -73,4 +73,8 @@ function register(base_url) {
             alert('erro');
         }
     })
+}
+
+function image_cashed() {
+    $('#upload_check').removeClass("d-none");
 }

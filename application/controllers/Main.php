@@ -34,13 +34,17 @@ class Main extends CI_Controller
 
 
         $data['title'] = ucfirst($page); // Capitalize the first letter
-        if ($page == 'client' || $page == 'landingpage') {
-            $user_events = $this->Main_model->get_user_events_data(1);
+        if ($page == 'client' || $page == 'landingpage') {//fetching event data in some cases.
+            if ($page != 'client') 
+               $event_status = 1;
+            else
+                $event_status = 0;
+            $user_events = $this->Main_model->get_user_events_data($event_status);
             $data['events'] = $user_events;
         } else if ($page == 'editevent') {
             $data['event_data'] = $this->Main_model->get_event_data($param);
         }
-
+        //loading pages by section
         $this->load->view('templates/header', $data);
         if ($page != 'login')
             $this->load->view('templates/navbar');
@@ -57,6 +61,7 @@ class Main extends CI_Controller
             $login_data['msg'] = 'Informações incompletas';
         } else {
             $user_data = $this->Main_model->get_user_data($username);
+            //decrypting and testing password
             if ($password == $this->encryption->decrypt($user_data[0]->password)) {
                 $login_data['status'] = true;
                 $login_data['msg'] = '';
@@ -82,11 +87,12 @@ class Main extends CI_Controller
     {
         $ext = explode('.', $_FILES["event_image"]['name']);
         $ext = end($ext);
-
+        //setting a custom name to the image
         $last_inserted_id = $this->Main_model->get_last_event($_SESSION['user_id']);
         $filename = 'event_' . end($last_inserted_id)->id;
         $filename . '.' . $ext;
         $update_satus = $this->Main_model->update_image_path($filename, end($last_inserted_id)->id);
+        //uploading the image to the server
         if ($update_satus) {
             $targetPath = $_SERVER['DOCUMENT_ROOT'] . '/assets/images/client_uploads/' . $filename;
             move_uploaded_file($_FILES["event_image"]["tmp_name"], $targetPath);

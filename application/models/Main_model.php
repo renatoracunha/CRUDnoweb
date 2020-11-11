@@ -5,7 +5,6 @@ class Main_model extends CI_Model
     function __construct()
     {
         $this->load->database();
-        //$this->db->query( "SET NAMES 'utf8'" );
     }
 
     #
@@ -17,9 +16,12 @@ class Main_model extends CI_Model
         return $query->result();
     }
 
-    public function get_user_events_data($user_id)
+    public function get_user_events_data($status)
     {
-        $query = $this->db->get_where('events', array('user_id' => $user_id));
+        if ($status == 1) 
+            $query = $this->db->order_by('event_date', 'ASC')->order_by('event_hour', 'ASC')->get_where('events',array('status' => $status,'event_date >=' => date('Y-m-d')));
+        else
+            $query = $this->db->from('events')->order_by('event_date', 'ASC')->order_by('event_hour', 'ASC')->get();
         return $query->result();
     }
 
