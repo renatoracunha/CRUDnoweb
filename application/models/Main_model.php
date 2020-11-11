@@ -13,28 +13,8 @@ class Main_model extends CI_Model
     #
     public function get_user_data($username)
     {
-        // $query = $this->db->get('users');
         $query = $this->db->get_where('users', array('username' => $username));
-        // print_r($query->result());exit;
         return $query->result();
-        /*
-            return true;
-        else
-            return false;*/
-        // print_r($query->result());exit;
-
-        // print_r($query->result());
-        // exit;
-        /*$stmt = $this->db->prepare("SELECT * from users");
-
-		// $stmt->bindValue(':TELEFONE', $telefone, PDO::PARAM_STR);
-		// $stmt->bindValue(':SENHA', $senha, PDO::PARAM_STR);
-
-		$stmt->execute();
-
-		$resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);*/
-
-        //return $query->result();
     }
 
     public function get_user_events_data($user_id)
@@ -67,6 +47,18 @@ class Main_model extends CI_Model
         return $query->result();
     }
 
+    public function update_image_path($image, $event_id)
+    {
+        $update_data = array(
+            'image' => $image,
+        );
+
+        $this->db->set($update_data);
+        $this->db->where('id', $event_id);
+        $results = $this->db->update('events');
+        return $results;
+    }
+
     public function get_event_data($event_id)
     {
         $query = $this->db->get_where('events', array('id' => $event_id));
@@ -86,6 +78,25 @@ class Main_model extends CI_Model
 
         $this->db->set($update_data);
         $this->db->where('id', $event_data['event_id']);
+        $results = $this->db->update('events');
+        return $results;
+    }
+
+    #client
+    public function delete_event($event_id)
+    {
+        $results = $this->db->delete('events', array('id' => $event_id));
+        return $results;
+    }
+
+    public function status_event($event_id, $status)
+    {
+        $update_data = array(
+            'status' => $status,
+        );
+
+        $this->db->set($update_data);
+        $this->db->where('id', $event_id);
         $results = $this->db->update('events');
         return $results;
     }

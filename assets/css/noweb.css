@@ -178,14 +178,23 @@ input[type="password"] {
 
 .main-card {
     background-color: #f1f1f1;
-    padding: 15px;
-    top: 15px;
+    padding: 15px !important;
+    background-color: cornflowerblue;
     border-radius: 10px;
-    position: relative;
+}
+
+.select-status {
+    max-width: 50px;
 }
 
 .event-list-image {
     height: 150px;
+    padding: 5px;
+}
+
+.btn-options {
+    min-height: 15px;
+    min-width: 15px;
 }
 
 
@@ -202,4 +211,20 @@ input[type="password"] {
     padding: 4px;
     background-color: #343a40;
     ;
+}
+
+
+/* landing page */
+
+.landing-page-image {
+    max-height: 500px;
+}
+
+.info-card {
+    color: white;
+    background-color: cornflowerblue;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 0px;
+    opacity: 0.3;
 }

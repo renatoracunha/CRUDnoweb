@@ -12,12 +12,19 @@ class Main extends CI_Controller
         $this->load->library('encryption');
     }
 
+    #navibar
+    public function logout()
+    {
+        session_unset();
+        $this->view();
+    }
+
     public function index()
     {
         $this->view();
     }
 
-    public function view($page = 'login', $param = '')
+    public function view($page = 'landingpage', $param = '')
     {
 
         if (!file_exists(APPPATH . 'views/pages/' . $page . '.php')) {
@@ -27,8 +34,8 @@ class Main extends CI_Controller
 
 
         $data['title'] = ucfirst($page); // Capitalize the first letter
-        if ($page == 'client') {
-            $user_events = $this->Main_model->get_user_events_data($_SESSION['user_id']);
+        if ($page == 'client' || $page == 'landingpage') {
+            $user_events = $this->Main_model->get_user_events_data(1);
             $data['events'] = $user_events;
         } else if ($page == 'editevent') {
             $data['event_data'] = $this->Main_model->get_event_data($param);
@@ -78,15 +85,15 @@ class Main extends CI_Controller
 
         $last_inserted_id = $this->Main_model->get_last_event($_SESSION['user_id']);
         $filename = 'event_' . end($last_inserted_id)->id;
-        // print_r($filename);
-        // exit;
-
-        // $ext = explode($_FILES["event_image"], '.');
-        // $ext = end($ext);
-        // $targetPath = './imagens/' . $_FILES['imagem_produto']['name'];
-        $targetPath = $_SERVER['DOCUMENT_ROOT'] . '/assets/images/client_uploads/' . $filename . '.' . $ext;
-        move_uploaded_file($_FILES["event_image"]["tmp_name"], $targetPath);
-        $this->view('client');
+        $filename . '.' . $ext;
+        $update_satus = $this->Main_model->update_image_path($filename, end($last_inserted_id)->id);
+        if ($update_satus) {
+            $targetPath = $_SERVER['DOCUMENT_ROOT'] . '/assets/images/client_uploads/' . $filename;
+            move_uploaded_file($_FILES["event_image"]["tmp_name"], $targetPath);
+            $this->view('client');
+        }else{
+           echo "Erro no upload, procurar equipe de desenvolvimento";
+        }
     }
 
     #edit event
@@ -94,6 +101,21 @@ class Main extends CI_Controller
     {
         $event_data = $this->input->get();
         $update_satus = $this->Main_model->edit_event($event_data);
+        echo json_encode($update_satus, JSON_UNESCAPED_UNICODE);
+    }
+
+    #client
+    public function ajax_delete_event()
+    {
+        $event_id = $this->input->post('event_id');
+        $delete_satus = $this->Main_model->delete_event($event_id);
+        echo json_encode($delete_satus, JSON_UNESCAPED_UNICODE);
+    }
+    public function ajax_status_event()
+    {
+        $event_id = $this->input->post('event_id');
+        $status = $this->input->post('status');
+        $update_satus = $this->Main_model->status_event($event_id, $status);
         echo json_encode($update_satus, JSON_UNESCAPED_UNICODE);
     }
 }

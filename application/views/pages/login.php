@@ -23,7 +23,8 @@
                     <div class="clearfix"></div>
 
                 </div> <!-- end login -->
-                <div class="logo">LOGO
+                <div class="logo">
+                    <img src="<?= base_url('assets/images/teste.jpg') ?>" alt="icon" width="200" height="200">
 
                     <div class="clearfix"></div>
                 </div>
